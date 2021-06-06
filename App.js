@@ -1,13 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { Provider as PaperProvider, DefaultTheme } from 'react-native-paper';
+import { SECONDARY } from './constants/colors';
+import useCachedResources from './hooks/useCachedResources';
+import { AuthNavigator } from './navigation/AuthNavigator';
 
 export default function App() {
+  const isLoadingComplete = useCachedResources();
+  if (!isLoadingComplete) {
+    return null;
+  }
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PaperProvider
+      theme={{
+        ...DefaultTheme,
+        colors: {
+          ...DefaultTheme.colors,
+          primary: SECONDARY,
+        },
+      }}
+    >
+      <StatusBar style='auto' />
+      <AuthNavigator />
+    </PaperProvider>
   );
 }
 
